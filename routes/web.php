@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\loginController;
+use App\Http\Controllers\authController;
 use App\Http\Controllers\outletController;
 use App\Http\Controllers\paketController;
 use App\Http\Controllers\memberController;
 use App\Http\Controllers\transaksiController;
+use App\Http\Controllers\detailController;
 
 
 /*
@@ -22,16 +23,18 @@ use App\Http\Controllers\transaksiController;
 
 
 //login
-Route::get('/',[loginController::class,'halamanlogin'])->name('halaman-login');
-Route::post('/',[loginController::class,'login'])->name('login');
+Route::get('/',[authController::class,'halamanlogin'])->name('halaman-login');
+Route::post('/',[authController::class,'login'])->name('login');
 
 
+//hak akses admin
 Route::middleware(['auth','RoleMiddleware:admin'])->group (function() {
-
-// dashboard
-Route::get('/dashboard', function () {
-    return view('index');
-});    
+    
+//pengurus
+Route::get('/data-user',[authController::class,'tampil'])->name('tampil-user');
+Route::get('/data-user/tambah',[authController::class,'tambah'])->name('tambah-user');
+Route::post('/data-user/simpan',[authController::class,'simpan'])->name('simpan-user');
+Route::delete('/data-user/hapus/{id}',[authController::class,'hapus'])->name('hapus-user');
 
 //outlet
 Route::get('/outlet',[outletController::class,'tampil'])->name('tampil-outlet');
@@ -49,6 +52,15 @@ Route::get('/paket/edit/{id}',[paketController::class,'edit'])->name('edit-paket
 Route::put('/paket/edit/{id}',[paketController::class,'update'])->name('update-paket');
 Route::delete('/paket/hapus/{id}',[paketController::class,'hapus'])->name('hapus-paket');
 
+});
+//hak akses admin dan kasir
+Route::middleware(['auth','RoleMiddleware:admin,kasir'])->group (function() {
+
+// dashboard
+Route::get('/dashboard', function () {
+    return view('index');
+});    
+
 //member
 Route::get('/member',[memberController::class,'tampil'])->name('tampil-member');
 Route::get('/member/tambah',[memberController::class,'tambah'])->name('tambah-member');
@@ -60,12 +72,16 @@ Route::delete('/member/hapus/{id}',[memberController::class,'hapus'])->name('hap
 //transaksi
 Route::get('/transaksi',[transaksiController::class,'tampil'])->name('tampil-transaksi');
 Route::get('/transaksi/tambah',[transaksiController::class,'tambah'])->name('tambah-transaksi');
-Route::get('/transaksi/simpan',[transaksiController::class,'simpan'])->name('simpan-transaksi');
+Route::post('/transaksi/simpan',[transaksiController::class,'simpan'])->name('simpan-transaksi');
+Route::get('/transaksi/edit/{id}',[transaksiController::class,'edit'])->name('edit-transaksi');
+Route::put('/transaksi/edit/{id}',[transaksiController::class,'update'])->name('update-transaksi');
+Route::delete('/transaksi/hapus/{id}',[transaksiController::class,'hapus'])->name('hapus-transaksi');
 
 //detail transaksi
-Route::get('/detail-transaksi',[detailController::class,'tampil'])->name('tampil-detail');
+Route::get('/detail-transaksi/{id}',[transaksiController::class,'detailTransaksi'])->name('tampil-detail');
+Route::get('/detail-transaksi/tambah',[detailController::class,'tambah'])->name('tambah-detail');
 
 
 //logout
-Route::get('/logout',[loginController::class,'logout'])->name('logout');
+Route::get('/logout',[authController::class,'logout'])->name('logout');
 });

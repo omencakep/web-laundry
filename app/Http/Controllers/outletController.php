@@ -15,7 +15,7 @@ class outletController extends Controller
     public function tampil(){
         $data = DB::table('outlet')->paginate(5);
         Paginator::useBootstrap();
-        return view('outlet',['outlet' => $data]);
+        return view('outlet', ['outlet' => $data]);
         
     }
     //tampilan tambah data

@@ -8,7 +8,8 @@
 <li ><a class="nav-link" href="{{route ('tampil-paket')}}"><i class="fas fa-box"></i> <span>Paket Laundry</span></a></li>
 @endif
 <li ><a class="nav-link" href="{{route ('tampil-member')}}"><i class="fas fa-user"></i> <span>Member</span></a></li>
-<li class="active"><a class="nav-link" href="{{route ('tampil-transaksi')}}"><i class="fas fa-file-invoice-dollar"></i> <span>Transaksi</span></a></li>
+<li ><a class="nav-link" href="{{route ('tampil-transaksi')}}"><i class="fas fa-file-invoice-dollar"></i> <span>Transaksi</span></a></li>
+<li ><a class="nav-link" href="{{route ('tampil-detail')}}"><i class="fas fa-receipt"></i> <span>Detail Transaksi</span></a></li>
 @if (auth()->user()->role=="admin") 
 <li ><a class="nav-link" href="{{route ('tampil-user')}}"><i class="fas fa-user-tie"></i> <span>Data Pengurus</span></a></li>
 @endif
@@ -27,12 +28,11 @@
                           @csrf
                         <div class="card-body">
                           
-                            <div class="row">
-                              <div class="col-md-4">
+                            
                           <div class="form-group">
                             <label>Pilih Outlet :</label>
                             <br>
-                            <select class="form-control col-md-6" name="id_outlet">
+                            <select class="form-control col-md-2" name="id_outlet">
                             <option value="" selected>--Pilih--</option>  
                             @foreach ($outlet as $data)
                             <option value="{{$data->id}}">{{$data->nama}}</option>            
@@ -46,14 +46,14 @@
                             {{$message}}
                             @enderror
                           </label>
+                          
                         </div>
-                      </div>
+                      
                         
-                      <div class="col-md-4">
                           <div class="form-group">
                             <label>Pilih Member :</label>
                             <br>
-                            <select class="form-control col-md-6" name="id_member">
+                            <select class="form-control col-md-2" name="id_member">
                             <option value="" selected>--Pilih--</option>  
                             @foreach ($member as $data_member)
                             <option value="{{$data_member->id}}">{{$data_member->nama_member}}</option>            
@@ -68,42 +68,8 @@
                             @enderror
                           </label>
                         </div>
-                      </div>
-                        
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label>Pilih Paket :</label>
-                          <br>
-                          <select class="form-control col-md-6" name="id_paket">
-                          <option value="" selected>--Pilih--</option>  
-                          @foreach ($paket as $data_paket)
-                          <option value="{{$data_paket->id}}">{{$data_paket->nama_paket}}</option>            
-                          @endforeach
-                          </select>  
-                          <label 
-                          @error('id_paket') 
-                          class="text-danger"
-                          @enderror>
-                          @error('id_paket')
-                          {{$message}}
-                          @enderror
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-
-                      <div class="form-group">
-                        <label>Berat :</label>
-                        <input type="number" min="1" class="form-control col-md-2" name="qty">
-                        <label 
-                        @error('qty') 
-                        class="text-danger"
-                        @enderror>
-                        @error('qty')
-                        {{$message}}
-                        @enderror
-                      </label>
-                      </div>
+                      
+                    
 
                     <div class="row">
                       <div class="col-md-4">

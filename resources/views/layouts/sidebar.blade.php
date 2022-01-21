@@ -4,7 +4,7 @@
         <a href="index.html">Laundry XII RPL 5</a>
       </div>
       <div class="sidebar-brand sidebar-brand-sm">
-        <a href="index.html">St</a>
+        <a href="{{url('/dashboard')}}">anjay</a>
       </div>
       <ul class="sidebar-menu">
           {{-- link --}}

@@ -19,14 +19,16 @@ class CreateTransaksisTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_outlet');
             $table->unsignedBigInteger('id_member');
+            $table->unsignedBigInteger('id_paket');
+            $table->double('qty');
             $table->date('tgl');
             $table->date('batas_waktu');
-            $table->date('tgl_bayar');
+            $table->date('tgl_bayar')->nullable();
             $table->enum('status', ['proses', 'selesai', 'diambil']);
             $table->enum('dibayar', ['dibayar', 'belum_dibayar']);
-
             $table->foreign('id_outlet')->references('id')->on('outlet');
             $table->foreign('id_member')->references('id')->on('member');
+            $table->foreign('id_paket')->references('id')->on('paket');
             $table->timestamps();
         });
     }

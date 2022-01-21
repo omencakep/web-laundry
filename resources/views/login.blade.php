@@ -37,7 +37,7 @@
                     @csrf
                   <div class="form-group">
                     <label for="email">Email</label>
-                    <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
+                    <input id="email" type="email" class="form-control" name="email" value="{{old('email')}}" tabindex="1" required autofocus>
                     <div class="invalid-feedback">
                       Please fill in your email
                     </div>
@@ -81,12 +81,6 @@
                 </form>
 
               </div>
-            </div>
-            <div class="mt-5 text-muted text-center">
-              Don't have an account? <a href="auth-register.html">Create One</a>
-            </div>
-            <div class="simple-footer">
-              Copyright &copy; Stisla 2018
             </div>
           </div>
         </div>

@@ -18,12 +18,9 @@ class CreateDetailTransaksisTable extends Migration
             
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_transaksi');
-            $table->unsignedBigInteger('id_paket');
-            $table->double('qty');
+            $table->double('subtotal');
             $table->text('keterangan');
-
             $table->foreign('id_transaksi')->references('id')->on('transaksi');
-            $table->foreign('id_paket')->references('id')->on('paket');
             $table->timestamps();
         });
     }

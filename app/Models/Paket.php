@@ -14,5 +14,8 @@ class Paket extends Model
     	'id_outlet','jenis','nama_paket', 'harga'
     ];
 
-    
+    public function outlet()
+    {
+        return $this->belongsT0('App\Models\Outlet', 'id_outlet', 'id');
+    }
 }

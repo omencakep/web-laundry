@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Detail_Transaksi extends Model
 {
     use HasFactory;
+    protected $table='detail_transaksi';
+    protected $primaryKey='id';
+    protected $fillable=[
+    	'id_transaksi','subtotal','keterangan'
+    ];
+    public function transaksi()
+    {
+        return $this->belongsT0('App\Models\Transaksi', 'id_transaksi', 'id');
+    }
 }
