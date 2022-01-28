@@ -1,14 +1,19 @@
 @extends('layouts.master')
 @section('link') 
 <li class="menu-header">Dashboard</li>
-<li class="active"><a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+<li class="active"><a class="nav-link" href="{{route ('dashboard')}}"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
 <li class="menu-header">Content</li>
 @if (auth()->user()->role=="admin") 
 <li ><a class="nav-link" href="{{route ('tampil-outlet')}}"><i class="fas fa-home"></i> <span>Outlet</span></a></li>
 <li ><a class="nav-link" href="{{route ('tampil-paket')}}"><i class="fas fa-box"></i> <span>Paket Laundry</span></a></li>
 @endif
+
+@if (auth()->user()->role != "owner") 
 <li ><a class="nav-link" href="{{route ('tampil-member')}}"><i class="fas fa-user"></i> <span>Member</span></a></li>
+@endif
+
 <li ><a class="nav-link" href="{{route ('tampil-transaksi')}}"><i class="fas fa-file-invoice-dollar"></i> <span>Transaksi</span></a></li>
+
 @if (auth()->user()->role=="admin") 
 <li ><a class="nav-link" href="{{route ('tampil-user')}}"><i class="fas fa-user-tie"></i> <span>Data Pengurus</span></a></li>
 @endif
@@ -23,14 +28,14 @@
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <div class="card card-statistic-1">
           <div class="card-icon bg-primary">
-            <i class="far fa-user"></i>
+            <i class="fas fa-home"></i>
           </div>
           <div class="card-wrap">
             <div class="card-header">
-              <h4>Total Member</h4>
+              <h4>Total Outlet</h4>
             </div>
             <div class="card-body">
-              10
+              {{ $outlet->count() }}
             </div>
           </div>
         </div>
@@ -38,14 +43,14 @@
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <div class="card card-statistic-1">
           <div class="card-icon bg-danger">
-            <i class="far fa-newspaper"></i>
+            <i class="far fa-user"></i>
           </div>
           <div class="card-wrap">
             <div class="card-header">
-              <h4>Total Outlet</h4>
+              <h4>Total Member</h4>
             </div>
             <div class="card-body">
-              42
+              {{ $member->count() }}
             </div>
           </div>
         </div>
@@ -53,14 +58,14 @@
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <div class="card card-statistic-1">
           <div class="card-icon bg-warning">
-            <i class="far fa-file"></i>
+            <i class="fas fa-box"></i>
           </div>
           <div class="card-wrap">
             <div class="card-header">
               <h4>Total Paket</h4>
             </div>
             <div class="card-body">
-              1,201
+              {{ $paket->count() }}
             </div>
           </div>
         </div>
@@ -68,14 +73,14 @@
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <div class="card card-statistic-1">
           <div class="card-icon bg-success">
-            <i class="fas fa-circle"></i>
+            <i class="fas fa-file-invoice-dollar"></i>
           </div>
-          <div class="card-wrap">
+          <div class="card-wrap ">
             <div class="card-header">
-              <h4>Online Users</h4>
+              <h4>Proses Pesanan</h4>
             </div>
             <div class="card-body">
-              47
+              {{ $transaksi->count() }}
             </div>
           </div>
         </div>

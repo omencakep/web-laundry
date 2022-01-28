@@ -75,6 +75,45 @@ class authController extends Controller
 
     }
 
+    //tampil edit profile
+    public function edit($id){
+        $user = DB::table('user')->where('id',$id)->first();
+        return view('user-edit',['user' => $user]);
+        // return view('user-edit');
+    }
+
+    //update data profile
+    public function update(Request $request, $id){
+    $validator = $request->validate([
+        'name' => 'required|string|max:100',
+        'role'=>'required|string',
+        'email' => 'required',
+        'password'=>'required',
+        ],
+        [
+            'name.required' => 'Nama tidak boleh kosong!',
+            'name.max' => 'Nama melebihi batas!',
+            
+            'role.required' => 'Role tidak boleh kosong!',
+
+            'email.required' => 'Alamat email tidak boleh kosong!',
+
+            'password.required' => 'Password tidak boleh kosong!',
+
+
+        ]
+    );
+    $user = User::where('id',$id)->update([
+                'name'=>$request->get('name'),
+                'role'=>$request->get('role'),
+                'email'=>$request->get('email'),
+                'password'=> bcrypt($request->get('password')),
+                'remember_token' => Str::random(60),
+                
+            ]);
+    return redirect()->route('edit-user')->with('message-update','Data berhasil diupdate!');
+}
+
     //hapus data user
     public function hapus($id){
         $user = User::where('id',$id)->delete();

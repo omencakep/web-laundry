@@ -7,6 +7,7 @@ use App\Http\Controllers\paketController;
 use App\Http\Controllers\memberController;
 use App\Http\Controllers\transaksiController;
 use App\Http\Controllers\detailController;
+use App\Http\Controllers\dashboardController;
 
 
 /*
@@ -20,12 +21,19 @@ use App\Http\Controllers\detailController;
 |
 */
 
-
+// dashboard
+Route::get('/dashboard',[dashboardController::class,'dashboard'])->name('dashboard');
 
 //login
 Route::get('/',[authController::class,'halamanlogin'])->name('halaman-login');
 Route::post('/',[authController::class,'login'])->name('login');
 
+//edit pengurus
+Route::get('/data-user/edit/{id}',[authController::class,'edit'])->name('edit-user');
+Route::put('/data-user/edit/{id}',[authController::class,'update'])->name('update-user');
+
+Route::get('/transaksi',[transaksiController::class,'tampil'])->name('tampil-transaksi');
+Route::get('/detail-transaksi/{id}',[transaksiController::class,'detailTransaksi'])->name('tampil-detail');
 
 //hak akses admin
 Route::middleware(['auth','RoleMiddleware:admin'])->group (function() {
@@ -56,10 +64,6 @@ Route::delete('/paket/hapus/{id}',[paketController::class,'hapus'])->name('hapus
 //hak akses admin dan kasir
 Route::middleware(['auth','RoleMiddleware:admin,kasir'])->group (function() {
 
-// dashboard
-Route::get('/dashboard', function () {
-    return view('index');
-});    
 
 //member
 Route::get('/member',[memberController::class,'tampil'])->name('tampil-member');
@@ -70,7 +74,6 @@ Route::put('/member/edit/{id}',[memberController::class,'update'])->name('update
 Route::delete('/member/hapus/{id}',[memberController::class,'hapus'])->name('hapus-member');
 
 //transaksi
-Route::get('/transaksi',[transaksiController::class,'tampil'])->name('tampil-transaksi');
 Route::get('/transaksi/tambah',[transaksiController::class,'tambah'])->name('tambah-transaksi');
 Route::post('/transaksi/simpan',[transaksiController::class,'simpan'])->name('simpan-transaksi');
 Route::get('/transaksi/edit/{id}',[transaksiController::class,'edit'])->name('edit-transaksi');
@@ -78,7 +81,6 @@ Route::put('/transaksi/edit/{id}',[transaksiController::class,'update'])->name('
 Route::delete('/transaksi/hapus/{id}',[transaksiController::class,'hapus'])->name('hapus-transaksi');
 
 //detail transaksi
-Route::get('/detail-transaksi/{id}',[transaksiController::class,'detailTransaksi'])->name('tampil-detail');
 Route::get('/detail-transaksi/tambah',[detailController::class,'tambah'])->name('tambah-detail');
 
 

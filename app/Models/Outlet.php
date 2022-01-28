@@ -13,8 +13,4 @@ class Outlet extends Model
     protected $fillable=[
     	'nama','alamat','telp'
     ];
-    public function Paket()
-    {
-        return $this->hasMany(Paket::class);
-    }
 }

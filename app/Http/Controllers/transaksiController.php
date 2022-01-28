@@ -22,7 +22,8 @@ class transaksiController extends Controller
         // Paginator::useBootstrap();
         // return view('transaksi',['transaksi' => $data]);
 
-        $transaksi = DB::table('transaksi')->join('outlet','outlet.id', '=', 'transaksi.id_outlet')
+        $transaksi = DB::table('transaksi')->select('transaksi.id as id_transaksi','transaksi.*','outlet.*','member.*',"paket.*")
+                                           ->join('outlet','outlet.id', '=', 'transaksi.id_outlet')
                                            ->join('member','member.id', '=', 'transaksi.id_member')
                                            ->join('paket','paket.id', '=', 'transaksi.id_paket')->paginate(5);
         Paginator::useBootstrap();
@@ -87,7 +88,7 @@ class transaksiController extends Controller
         $detail = detail_transaksi::create([
         'id_transaksi' => $transaksi->id,
         'subtotal' => $transaksi->qty * $paket->harga,
-        'keterangan' => 'dasnfjan',
+        'keterangan' => '',
         ]);
         
          return redirect()->route('tampil-transaksi')->with('message-simpan','Data berhasil disimpan!');
@@ -100,7 +101,8 @@ class transaksiController extends Controller
             $transaksi = DB::table('transaksi')->select('*')->where('id', $id)->first();
             $outlet = DB::table('outlet')->select('id','nama')->get();
             $member = DB::table('member')->select('id','nama_member')->get();
-            return view('transaksi-edit', compact('transaksi','outlet','member'));
+            $paket = DB::table('paket')->select('id','nama_paket')->get();
+            return view('transaksi-edit', compact('transaksi','outlet','member','paket'));
     
         }
 
@@ -109,6 +111,8 @@ class transaksiController extends Controller
         $validator = $request->validate([
             'id_outlet' => 'required',
             'id_member' => 'required|string',
+            'id_paket' => 'required|string',
+            'qty' => 'required|min:1',
             'tgl'=>'required',
             'batas_waktu'=>'required',
             'tgl_bayar'=>'',
@@ -118,6 +122,9 @@ class transaksiController extends Controller
             [
                 'id_outlet.required' => 'Outlet tidak boleh kosong!',
                 'id_member.required' => 'Nama member tidak boleh kosong!',
+                'id_paket.required' => 'Jenis paket tidak boleh kosong!',
+                'qty.required' => 'Berat tidak boleh kosong!',
+                'qty.min' => 'Berat minimal min:! kg',
                 'tgl.required' => 'Tanggal transaksi tidak boleh kosong!',
                 'batas_waktu.required' => 'Batas waktu tidak boleh kosong!',
                 'status.required' => 'Status tidak boleh kosong!',  
@@ -127,33 +134,49 @@ class transaksiController extends Controller
         $transaksi = Transaksi::where('id',$id)->update([
             'id_outlet'=>$request->get('id_outlet'),
             'id_member'=>$request->get('id_member'),
+            'id_paket'=>$request->get('id_paket'),
+            'qty'=>$request->get('qty'),
             'tgl'=>$request->get('tgl'),
             'batas_waktu'=>$request->get('batas_waktu'),
             'tgl_bayar'=>$request->get('tgl_bayar'),
             'status'=>$request->get('status'),
             'dibayar'=>$request->get('dibayar'),
                 ]);
+
+            $id_paket = $request->get('id_paket');
+            $paket = Paket::all()->find($id_paket);
+
+            $detail = detail_transaksi::where('id_transaksi',$id)->update([
+            'id_transaksi' => $id,
+            'subtotal' => $request->get('qty') * $paket->harga,
+            'keterangan' => '',
+            ]);
         return redirect()->route('tampil-transaksi')->with('message-update','Data berhasil diupdate!');
     }
 
         //hapus data
         public function hapus($id){
+            $detail = Detail_Transaksi::where('id_transaksi',$id)->delete();
             $transaksi = Transaksi::where('id',$id)->delete();
             return redirect()->back()->with('message-hapus','Data berhasil dihapus!');
         }
 
         public function detailTransaksi($id)
         {
-            $transaksi = DB::table('transaksi')->join('outlet','outlet.id', '=', 'transaksi.id_outlet')
-                                           ->join('member','member.id', '=', 'transaksi.id_member')
-                                           ->join('paket','paket.id', '=', 'transaksi.id_paket')->first();
-                                           $detail = Detail_Transaksi::all();
+            // return $id;
             
+            // $transaksi = DB::table('transaksi')->join('outlet','outlet.id', '=', 'transaksi.id_outlet')
+            //                                    ->join('member','member.id', '=', 'transaksi.id_member')
+            //                                    ->join('paket','paket.id', '=', 'transaksi.id_paket')->first();
+            // $detail = DB::table('detail_transaksi')->where('id_transaksi', $id)->first();
 
-        //  $transaksi = Transaksi::all();
-        //  $detail = Detail_Transaksi::all();
-        // $detail = DB::table('detail_transaksi')->join('transaksi','transaksi.id', '=', 'detail_transaksi.id_transaksi');
-        return view('detail-transaksi', compact('detail','transaksi'));
+        $transaksi = DB::table('transaksi')->select('*')->where('id', $id)->first();
+        $outlet = DB::table('outlet')->where('id', $transaksi->id_outlet)->get();
+        $member = DB::table('member')->where('id', $transaksi->id_member)->get();
+        $paket  = DB::table('paket')->where('id', $transaksi->id_paket)->get();
+
+        $detail = DB::table('detail_transaksi')->where('id_transaksi', $id)->first();
+        return view('detail-transaksi', compact('transaksi','outlet','member','paket','detail',));
 
         }
 
