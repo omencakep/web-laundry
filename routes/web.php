@@ -30,10 +30,14 @@ Route::post('/',[authController::class,'login'])->name('login');
 
 //edit pengurus
 Route::get('/data-user/edit/{id}',[authController::class,'edit'])->name('edit-user');
-Route::put('/data-user/edit/{id}',[authController::class,'update'])->name('update-user');
+Route::put('/data-user/update/{id}',[authController::class,'update'])->name('update-user');
 
+//detail transaksi
 Route::get('/transaksi',[transaksiController::class,'tampil'])->name('tampil-transaksi');
 Route::get('/detail-transaksi/{id}',[transaksiController::class,'detailTransaksi'])->name('tampil-detail');
+
+//generate laporan
+Route::get('/laporan/{id}',[detailController::class,'laporan'])->name('laporan');
 
 //hak akses admin
 Route::middleware(['auth','RoleMiddleware:admin'])->group (function() {
@@ -80,8 +84,7 @@ Route::get('/transaksi/edit/{id}',[transaksiController::class,'edit'])->name('ed
 Route::put('/transaksi/edit/{id}',[transaksiController::class,'update'])->name('update-transaksi');
 Route::delete('/transaksi/hapus/{id}',[transaksiController::class,'hapus'])->name('hapus-transaksi');
 
-//detail transaksi
-Route::get('/detail-transaksi/tambah',[detailController::class,'tambah'])->name('tambah-detail');
+// Route::get('/detail-transaksi/tambah',[detailController::class,'tambah'])->name('tambah-detail');
 
 
 //logout

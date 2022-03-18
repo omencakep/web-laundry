@@ -21,7 +21,7 @@
       <div class="section-header">
         <h1>Profile</h1>
         <div class="section-header-breadcrumb">
-          <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+          <div class="breadcrumb-item active"><a href="{{route('dashboard')}}">Dashboard</a></div>
           <div class="breadcrumb-item">Profile</div>
         </div>
       </div>
@@ -32,13 +32,17 @@
         </p>
 
         <div class="col-12 col-md-12 col-lg-12">
-            <form action="{{route ('update-user', Auth::user()->id)}}" method="POST">
+            <form action="{{route ('update-user', Auth::user()->id)}}" method="POST" enctype="multipart/form-data">
               @csrf
               @method('put')
             <div class="card">
               <div class="card-header"> 
                 <h4>Edit Profile</h4>
-                {{-- message update data --}}
+
+                
+              </div>
+                <div class="card-body">
+                                  {{-- message update data --}}
                 @if (session('message-update'))
                 <div class="alert alert-info alert-dismissible show fade">
                   <div class="alert-body">
@@ -49,11 +53,15 @@
                   </div>
                 </div>
                 @endif
-                
-              </div>
-                
-                
-                <div class="card-body">
+                {{-- <div class="col-6 col-sm-3 col-lg-3 mb-4 mb-md-0">
+                  <div class="avatar-item">
+                    <img alt="image" src="{{ asset('assets/img/avatar/avatar-1.png')}}" class="img-fluid" data-toggle="tooltip" title="">
+                    <input type="file" name="gambar"><i class="fas fa-pencil-alt"></i>
+                    <div class="avatar-badge" title="" data-toggle="tooltip" >
+                    
+                    </div>
+                  </div>
+                </div> --}}
                     <div class="row">
                       <div class="form-group col-md-6 col-12">
                         <label>Nama</label>
@@ -63,10 +71,17 @@
                         @else
                         value="{{$user->name}}" 
                         @endif
-                        required="">
-                        <div class="invalid-feedback">
-                          Please fill in the first name
-                        </div>
+                        >
+
+                        <label 
+                            @error('name') 
+                            class="text-danger"
+                            @enderror>
+                            @error('name')
+                            {{$message}}
+                            @enderror
+                          </label>
+
                       </div>
 
                     </div> 
@@ -79,21 +94,21 @@
                         @else
                         value="{{$user->email}}" 
                         @endif
-                         required="">
-                        <div class="invalid-feedback">
-                          Harap isi email
-                        </div>
+                        >
+
+                        <label 
+                            @error('email') 
+                            class="text-danger"
+                            @enderror>
+                            @error('email')
+                            {{$message}}
+                            @enderror
+                          </label>
+
                       </div>
                       <div class="form-group col-md-6 col-6">
                         <label>Password</label>
-                        <input type="password" class="form-control" name="password"
-
-                        value="{{old('password')}}" 
-
-                         >
-                        <div class="invalid-feedback">
-                          Harap isi password
-                        </div>
+                        <input type="password" class="form-control" placeholder="Kosongi password jika tidak diubah." name="password" value="{{old('password')}}">
                       </div>
                       </div>
                       <div class="row">
@@ -107,13 +122,24 @@
                         @endif
                         disabled>
                       </div>
+                      <div class="form-group col-md-5 col-12">
+                        {{-- <label>Role</label> --}}
+                        <input type="text" class="form-control" name="role"
+                        @if (old('role'))
+                        value="{{old('role')}}" 
+                        @else
+                        value="{{$user->role}}" 
+                        @endif
+                        hidden>
+                        
+                      </div>
                     </div>
                   </div>
 
                     
                     
                     <div class="card-footer text-left">
-                      <a href="{{url('/dashboard')}}" class="btn btn-primary">Back</a>
+                      <a href="{{route('dashboard')}}" class="btn btn-primary">Back</a>
                       <button class="btn btn-info" type="submit">Simpan</button>
                     </form>
                     </div>

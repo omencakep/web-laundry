@@ -75,7 +75,7 @@
                         </div>
                         <div class="card-footer text-left">
                           <a href="{{route('tampil-transaksi')}}" class="btn btn-primary">Back</a>
-                          <a href="/" class="btn btn-success">Generate Laporan</a>
+                          <a href="{{route('laporan',$transaksi->id)}}" class="btn btn-success">Generate Laporan</a>
                         </div>
 
                       </div>                
