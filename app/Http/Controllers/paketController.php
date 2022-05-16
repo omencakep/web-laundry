@@ -14,23 +14,14 @@ class paketController extends Controller
 {
     //tampil data
     public function tampil(){
-        
-        //  $outlet = Outlet::all();
-        // $paket = Paket::all();
-        $data = DB::table('outlet')->join('paket','paket.id_outlet', '=', 'outlet.id')->paginate(5);
-        Paginator::useBootstrap();
-        return view('paket',['paket' => $data]);
+        return 
+        Paket::all();
+        // $data = DB::table('outlet')->join('paket','paket.id_outlet', '=', 'outlet.id')->paginate(5);
+        // Paginator::useBootstrap();
+        // return view('paket',['paket' => $data]);
 
         
         
-    }
-    //tampilan tambah data
-    public function tambah(){
-        $outlet = Outlet::all();
-        return view('paket-tambah', compact('outlet'));
-        return view('paket-tambah');
-        
-
     }
 
     //simpan data
@@ -58,8 +49,6 @@ class paketController extends Controller
         'nama_paket'=>$request->get('nama_paket'),
         'harga'=>$request->get('harga'),
         ]);
-        
-        return redirect()->route('tampil-paket')->with('message-simpan','Data berhasil disimpan!');
     }
 
     //tampil edit data

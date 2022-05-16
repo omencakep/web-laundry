@@ -13,20 +13,18 @@ class outletController extends Controller
 
     //tampil data
     public function tampil(){
-        $data = DB::table('outlet')->paginate(5);
-        Paginator::useBootstrap();
-        return view('outlet', ['outlet' => $data]);
+        return Outlet::all();
+        // $data = DB::table('outlet')->paginate(5);
+        // Paginator::useBootstrap();
+        // return view('outlet', ['outlet' => $data]);
         
     }
-    //tampilan tambah data
-    public function tambah(){
-        return view('outlet-tambah') ;
-    }
+
     //simpan data
     public function simpan(Request $request){
 
-        $validator = $request->validate([
-        'nama' => 'required|string|max:100',
+        $this->validate($request,[
+        'nama' => 'required|string|max:30',
         'alamat' => 'required|string',
         'telp'=>'required|string|max:15',
         ],
@@ -45,7 +43,6 @@ class outletController extends Controller
         'alamat'=>$request->get('alamat'),
         'telp'=>$request->get('telp'),
         ]);
-        return redirect()->route('tampil-outlet')->with('message-simpan','Data berhasil disimpan!');
     }
 
     //tampil edit data

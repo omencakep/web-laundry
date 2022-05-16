@@ -16,9 +16,9 @@ class LoginMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!session('berhasil_login')){
-            return redirect('/');
-        }
-         return $next($request);
+        // if(!session('berhasil_login')){
+        //     return redirect('/');
+        // }
+        //  return $next($request);
     }
 }

@@ -12,19 +12,16 @@ class memberController extends Controller
 {
     //tampil data member
     public function tampil(){
-        $data = DB::table('member')->paginate(5);
-        Paginator::useBootstrap();
-        return view('member',['member' => $data]);
+        return Member::all();
+        // $data = DB::table('member')->paginate(5);
+        // Paginator::useBootstrap();
+        // return view('member',['member' => $data]);
     }
 
-    //tampilan tambah data
-    public function tambah(){
-        return view('member-tambah') ;
-    }
 
     //simpan data
     public function simpan(Request $request){
-        $validator = $request->validate([
+        $this->validate($request,[
             'nama_member' => 'required|string|max:100',
             'alamat' => 'required|string',
             'jenis_kelamin'=>'required',
@@ -48,7 +45,7 @@ class memberController extends Controller
         'jenis_kelamin'=>$request->get('jenis_kelamin'),
         'telp'=>$request->get('telp'),
         ]);
-        return redirect()->route('tampil-member')->with('message-simpan','Data berhasil disimpan!');;
+        
     }
 
      //tampil edit data
