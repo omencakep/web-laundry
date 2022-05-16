@@ -20,6 +20,7 @@ class CreateTransaksisTable extends Migration
             $table->unsignedBigInteger('id_outlet');
             $table->unsignedBigInteger('id_member');
             $table->unsignedBigInteger('id_paket');
+            $table->unsignedBigInteger('id_petugas');
             $table->double('qty');
             $table->date('tgl');
             $table->date('batas_waktu');
@@ -29,6 +30,7 @@ class CreateTransaksisTable extends Migration
             $table->foreign('id_outlet')->references('id')->on('outlet');
             $table->foreign('id_member')->references('id')->on('member');
             $table->foreign('id_paket')->references('id')->on('paket');
+            $table->foreign('id_petugas')->references('id')->on('user');
             $table->timestamps();
         });
     }

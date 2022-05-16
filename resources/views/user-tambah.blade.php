@@ -10,11 +10,19 @@
 <li ><a class="nav-link" href="{{route ('tampil-member')}}"><i class="fas fa-user"></i> <span>Member</span></a></li>
 <li ><a class="nav-link" href="{{route ('tampil-transaksi')}}"><i class="fas fa-file-invoice-dollar"></i> <span>Transaksi</span></a></li>
 @if (auth()->user()->role=="admin") 
-<li ><a class="nav-link" href="{{route ('tampil-user')}}"><i class="fas fa-user-tie"></i> <span>Data Pengurus</span></a></li>
+<li class="active" ><a class="nav-link" href="{{route ('tampil-user')}}"><i class="fas fa-user-tie"></i> <span>Data Pengurus</span></a></li>
 @endif
 @stop
 @section('content')
     <div class="section-body">
+      <div class="section-header">
+        <h1>Data Pengurus</h1>
+        <div class="section-header-breadcrumb">
+          <div class="breadcrumb-item active"><a href="{{route('dashboard')}}">Dashboard</a></div>
+          <div class="breadcrumb-item"><a href="{{route('tampil-user')}}">Pengurus</a></div>
+          <div class="breadcrumb-item">Tambah Pengurus</div>
+        </div>
+      </div>
         <div class="row">
             <div class="col-12 col-md-12 col-lg-12">
                 <div class="row">

@@ -16,7 +16,15 @@
 @endif
 @stop
 @section('content')
-    <div class="section-body">
+    <div class="section-body" >
+      <div class="section-header">
+        <h1>Detail Transaksi</h1>
+        <div class="section-header-breadcrumb">
+          <div class="breadcrumb-item active"><a href="{{route('dashboard')}}">Dashboard</a></div>
+          <div class="breadcrumb-item"><a href="{{route('tampil-transaksi')}}">Transaksi</a></div>
+          <div class="breadcrumb-item">Detail Transaksi</div>
+        </div>
+      </div>
         <div class="row">
             <div class="col-12 col-md-12 col-lg-12">
                 <div class="row">
@@ -44,15 +52,15 @@
                             
                             <tr>
                               {{-- <td>{{$detail->firstItem()+$no}}</td> --}}
-                              @foreach ($outlet as $outlets)
-                              <td>{{$outlets->nama}}</td>
-                              @endforeach
-                              @foreach ($member as $members)
-                              <td>{{$members->nama_member}}</td>
-                              @endforeach
-                              @foreach ($paket as $pakets)
-                              <td>{{$pakets->nama_paket}}</td>
-                              @endforeach
+                             
+                              <td>{{$outlet->nama}}</td>
+                             
+                              
+                              <td>{{$member->nama_member}}</td>
+                             
+                             
+                              <td>{{$paket->nama_paket}}</td>
+                              
                               <td>{{$transaksi->qty}} Kg</td>
                               <td>Rp. {{$detail->subtotal}}</td>
                               <td>{{$transaksi->tgl}}</td>

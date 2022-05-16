@@ -7,7 +7,9 @@
 <li ><a class="nav-link" href="{{route ('tampil-outlet')}}"><i class="fas fa-home"></i> <span>Outlet</span></a></li>
 <li ><a class="nav-link" href="{{route ('tampil-paket')}}"><i class="fas fa-box"></i> <span>Paket Laundry</span></a></li>
 @endif
+@if (auth()->user()->role !="owner") 
 <li ><a class="nav-link" href="{{route ('tampil-member')}}"><i class="fas fa-user"></i> <span>Member</span></a></li>
+@endif
 <li ><a class="nav-link" href="{{route ('tampil-transaksi')}}"><i class="fas fa-file-invoice-dollar"></i> <span>Transaksi</span></a></li>
 @if (auth()->user()->role=="admin") 
 <li ><a class="nav-link" href="{{route ('tampil-user')}}"><i class="fas fa-user-tie"></i> <span>Data Pengurus</span></a></li>
@@ -32,9 +34,7 @@
         </p>
 
         <div class="col-12 col-md-12 col-lg-12">
-            <form action="{{route ('update-user', Auth::user()->id)}}" method="POST" enctype="multipart/form-data">
-              @csrf
-              @method('put')
+           
             <div class="card">
               <div class="card-header"> 
                 <h4>Edit Profile</h4>
@@ -62,6 +62,9 @@
                     </div>
                   </div>
                 </div> --}}
+                <form action="{{route ('update-user', Auth::user()->id)}}" method="POST" enctype="multipart/form-data">
+                  @csrf
+                  @method('put')
                     <div class="row">
                       <div class="form-group col-md-6 col-12">
                         <label>Nama</label>
@@ -87,14 +90,22 @@
                     </div> 
                     <div class="row">
                       <div class="form-group col-md-6 col-6">
+                        
                         <label>Email</label>
-                        <input type="email" class="form-control" name="email"
+                        <div class="input-group mb-2 mr-sm-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">@</div>
+                          </div>
+                          <input type="email" class="form-control" name="email"
                          @if (old('email'))
                         value="{{old('email')}}" 
                         @else
                         value="{{$user->email}}" 
                         @endif
                         >
+                        </div>
+                        
+                        
 
                         <label 
                             @error('email') 
@@ -106,9 +117,20 @@
                           </label>
 
                       </div>
-                      <div class="form-group col-md-6 col-6">
+
+                      {{-- <div class="form-group col-md-6 col-6" >
                         <label>Password</label>
-                        <input type="password" class="form-control" placeholder="Kosongi password jika tidak diubah." name="password" value="{{old('password')}}">
+                        <input type="password" class="form-control" placeholder="Kosongi password jika tidak diubah." name="password-baru">
+                      </div> --}}
+                      <div class="form-group col-md-6 col-6"  >
+                        <label>Password</label>
+                        <input type="password" class="form-control" placeholder="Kosongi password jika tidak diubah." name="password"
+                        {{-- @if (old('password'))
+                        value="{{old('password')}}" 
+                        @else
+                         value="{{$user->password}}"
+                        @endif --}}
+                        >
                       </div>
                       </div>
                       <div class="row">
@@ -122,15 +144,15 @@
                         @endif
                         disabled>
                       </div>
-                      <div class="form-group col-md-5 col-12">
-                        {{-- <label>Role</label> --}}
+                      <div class="form-group col-md-5 col-12" hidden>
+                        <label>Role</label>
                         <input type="text" class="form-control" name="role"
                         @if (old('role'))
                         value="{{old('role')}}" 
                         @else
                         value="{{$user->role}}" 
                         @endif
-                        hidden>
+                        >
                         
                       </div>
                     </div>

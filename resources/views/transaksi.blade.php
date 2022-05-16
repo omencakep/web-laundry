@@ -24,13 +24,21 @@
       <div class="breadcrumb-item">Data Transaksi</div>
     </div>
   </div>
-    <div class="section-body">
+    <div class="section-body" >
         <div class="row">
             <div class="col-12 col-md-12 col-lg-12">
-              @if (auth()->user()->role != "owner") 
-                <a href="{{route ('tambah-transaksi')}}" class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Tambah Data</a>
+              <div class="card-body bg-white">
+              <form class="form-inline text-center" action="{{route('cari-transaksi')}}">
+                <div class="search-element">
+                  <input class="form-control" name="cari" value="{{ old('cari') }}" type="search" placeholder="Cari Data Transaksi..." aria-label="Search" data-width="500">
+                  <button class="btn btn-info" type="submit" value="cari"><i class="fas fa-search"></i></button>
+                </div>
+                @if (auth()->user()->role != "owner") 
+                <a href="{{route ('tambah-transaksi')}}" class="btn btn-icon icon-left btn-primary m-4"><i class="fas fa-clipboard-list"></i> Tambah Data</a>
                 @endif
-                <a href="#" class="btn btn-icon icon-left btn-success"><i class="fas fa-clipboard-list"></i> Export Data</a>
+              </form>
+
+                {{-- <a href="#" class="btn btn-icon icon-left btn-success"><i class="fas fa-clipboard-list"></i> Export Data</a> --}}
                 <hr>
                 {{-- message simpan data --}}
                 @if (session('message-simpan'))
@@ -65,15 +73,19 @@
                   </div>
                 </div>
                 @endif
-                <table class="table table-striped table-bordered">
-                  <tr>
+                <div class="table-responsive-md mt-3">
+                  <table class="table table-striped table-hover" >
+                  <tr class="thead-light">
                     <th>No</th>
                     <th>Outlet</th>
                     <th>Nama Member</th>
+                    <th>Nama Petugas</th>
                     <th>Tanggal Transaksi</th>
+                    <th>Status</th>
+                    <th>Pembayaran</th>
                     {{-- <th>Batas Waktu</th>
                     <th>Tanggal Bayar</th>
-                    <th>Status</th>
+                    
                     <th>Pembayaran</th> --}}
                     <th>Aksi</th>
                   </tr>
@@ -84,22 +96,24 @@
                     <td>{{$transaksi->firstItem()+$no}}</td>
                     <td>{{$data->nama}}</td>
                     <td>{{$data->nama_member}}</td>
+                    <td>{{$data->name}}</td>
                     <td>{{$data->tgl}}</td>
+                    <td>{{$data->status}}</td>
+                    <td>{{$data->dibayar}}</td>
                     {{-- <td>{{$data->batas_waktu}}</td>
                     <td>{{$data->tgl_bayar}}</td>
-                    <td>{{$data->status}}</td>
-                    <td>{{$data->dibayar}}</td> --}}
+                     --}}
                     
                     <td>
                       <a href=" {{route('tampil-detail',$data->id_transaksi)}}" class="btn btn-icon btn-success" ><i class="fas fa-eye"></i><a>
                         @if (auth()->user()->role != "owner") 
-                        <a href="{{route('edit-transaksi',$data->id_transaksi)}}" class="btn btn-icon btn-primary"><i class="far fa-edit"></i></a>
+                        <a href="{{route('edit-transaksi',$data->id_transaksi)}}" class="btn btn-icon btn-warning"><i class="fas fa-pencil-alt"></i></a>
                         <a href="#" data-id="{{$data->id_transaksi}}" class="btn btn-icon btn-danger hapus">
                         <form action="{{route('hapus-transaksi',$data->id_transaksi)}}" id="hapus{{$data->id_transaksi}}"method="POST">
                           @csrf
                           @method('delete')
                         </form>
-                        <i class="fas fa-times"></i>
+                        <i class="fas fa-trash"></i>
                       </a>
                       @endif
                     </td>
@@ -107,7 +121,9 @@
                   @endforeach
 
                 </table>
+                </div>
                 {{$transaksi->links()}}
+            </div>
             </div>
          </div>
 

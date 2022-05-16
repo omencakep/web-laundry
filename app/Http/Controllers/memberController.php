@@ -7,6 +7,7 @@ use App\Models\Member;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
+Use Exception;
 
 class memberController extends Controller
 {
@@ -88,8 +89,31 @@ class memberController extends Controller
 
     //hapus data
     public function hapus($id){
-        $member = Member::where('id',$id)->delete();
-        return redirect()->back()->with('message-hapus','Data berhasil dihapus!');;
+        try
+        {
+            $member = Member::where('id',$id)->delete();
+            return redirect()->back()->with('message-hapus','Data berhasil dihapus!');
+        }
+        catch(Exception $e)
+        {
+        return redirect()->back()->with('message-gagal','Data gagal dihapus, member masih digunakan dalam transaksi!');
+        }
+
     }
+        //search data
+        public function cari(Request $request){
+            // menangkap data pencarian
+            $cari = $request->cari;
+     
+            // mengambil data dari nama sesuai pencarian data
+        $member = DB::table('member')
+        ->where('nama_member','like',"%".$cari."%")
+        ->orwhere('alamat','like',"%".$cari."%")
+        ->orwhere('telp','like',"%".$cari."%")
+        ->paginate(5);
+        Paginator::useBootstrap();
+            // mengirim data ke view
+        return view('member',['member' => $member]);
+        }
 
 }

@@ -15,6 +15,14 @@
 @stop
 @section('content')
     <div class="section-body">
+      <div class="section-header">
+        <h1>Transaksi Laundry</h1>
+        <div class="section-header-breadcrumb">
+          <div class="breadcrumb-item active"><a href="{{route('dashboard')}}">Dashboard</a></div>
+          <div class="breadcrumb-item"><a href="{{route('tampil-transaksi')}}">Transaksi</a></div>
+          <div class="breadcrumb-item">Edit Transaksi</div>
+        </div>
+      </div>
         <div class="row">
             <div class="col-12 col-md-12 col-lg-12">
                 <div class="row">
@@ -29,11 +37,11 @@
                         <div class="card-body">
                           
                             <div class="row">
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                           <div class="form-group">
                             <label>Outlet:</label>
                             <br>
-                            <select class="form-control col-md-6" name="id_outlet">
+                            <select class="form-control col-md-8" name="id_outlet">
                             {{-- <option value="" selected>--Pilih--</option>   --}}
                             {{-- <option value="{{$paket->id_outlet}}" selected>{{$outlet->nama}}</option> --}}
                             @foreach ($outlet as $data)
@@ -53,11 +61,11 @@
                         </div>
                       </div>
                         
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                           <div class="form-group">
                             <label>Member:</label>
                               <br>
-                              <select class="form-control col-md-6" name="id_member">
+                              <select class="form-control col-md-8" name="id_member">
                               
                               @foreach ($member as $data)
                               
@@ -76,14 +84,14 @@
                         </div>
                       </div>
                         
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                         <div class="form-group">
                           <label>Pilih Paket :</label>
                           <br>
-                          <select class="form-control col-md-6" name="id_paket">
+                          <select class="form-control col-md-8" name="id_paket">
                           
                           @foreach ($paket as $data)
-                          <option value="{{$data->id}}"{{old('id_paket',$transaksi->id_paket) == $data->id  ? "selected" : ''}}>{{$data->nama_paket}}</option>  
+                          <option value="{{$data->id}}"{{old('id_paket',$transaksi->id_paket) == $data->id  ? "selected" : ''}}>{{$data->nama_paket}} - Rp.{{$data->harga}}</option>  
                           @endforeach
                           </select>  
                           <label 
@@ -96,10 +104,11 @@
                         </label>
                       </div>
                     </div>
-                  </div>
 
+                    <div class="col-md-3">
                       <div class="form-group">
                         <label>Berat :</label>
+                        <div class="input-group mb-2 mr-sm-2">
                         <input type="number" min="1" name="qty" 
                         @if (old('qty'))
                             value="{{old('qty')}}"
@@ -107,7 +116,11 @@
                             value="{{$transaksi->qty}}"
                         @endif
 
-                        class="form-control col-md-2" >
+                        class="form-control col-md-8" >
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">Kg</div>
+                        </div>
+                      </div>
                         <label 
                         @error('qty') 
                         class="text-danger"
@@ -117,6 +130,10 @@
                         @enderror
                       </label>
                       </div>
+                    </div>
+                  </div>
+
+ 
 
                     <div class="row">
                       <div class="col-md-4">
@@ -128,7 +145,14 @@
                       @else
                       value="{{$transaksi->tgl}}" 
                       @endif
-                            class="form-control col-md-6">
+                            class="form-control col-md-6" disabled>
+                            <input type="date" name="tgl"
+                            @if (old('tgl'))
+                      value="{{old('tgl')}}" 
+                      @else
+                      value="{{$transaksi->tgl}}" 
+                      @endif
+                            class="form-control col-md-6" hidden>
                             <label 
                             @error('tgl') 
                             class="text-danger"
@@ -149,7 +173,14 @@
                             @else
                             value="{{$transaksi->batas_waktu}}"
                             @endif
-                            class="form-control col-md-6" >
+                            class="form-control col-md-6" disabled>
+                            <input type="date" name="batas_waktu" 
+                            @if (old('batas_waktu'))
+                                value="{{old('batas_waktu')}}"
+                            @else
+                            value="{{$transaksi->batas_waktu}}"
+                            @endif
+                            class="form-control col-md-6" hidden>
                             <label 
                             @error('batas_waktu') 
                             class="text-danger"
@@ -183,11 +214,14 @@
                           </div>
                         </div>
 
+                        <div class="row">
+
+                       <div class="col-md-4">
                           <div class="form-group">
                             <label>Status :</label>
                             <br>
                             <select name="status"
-                            class="form-control col-md-2" >
+                            class="form-control col-md-6" >
                             {{-- <option value="" selected>--Pilih--</option> --}}
                             <option value="proses"{{ old('status', $transaksi->status) == 'proses' ? 'selected' : '' }}>Proses</option>
                             <option value="selesai"{{ old('status', $transaksi->status) == 'selesai' ? 'selected' : '' }}>Selesai</option>
@@ -202,12 +236,14 @@
                             @enderror
                           </label>
                           </div>
+                        </div>
 
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label>Status Bayar :</label>
                             <br>
                             <select name="dibayar"
-                            class="form-control col-md-2" >
+                            class="form-control col-md-6" >
                             {{-- <option value="" selected>--Pilih--</option> --}}
                             <option value="dibayar"{{ old('dibayar', $transaksi->dibayar) == 'dibayar' ? 'selected' : '' }}>Dibayar</option>
                             <option value="belum_dibayar"{{ old('dibayar', $transaksi->dibayar) == 'belum_dibayar' ? 'selected' : '' }}>Belum dibayar</option>
@@ -221,6 +257,41 @@
                             @enderror
                           </label>
                           </div>
+                        </div>
+
+                        <div class="col-md-4">
+                          <div class="form-group">
+                          <label>Nama Petugas :</label>
+                          <div class="input-group mb-2 mr-sm-2">
+                            <input type="text" 
+                            @if (old('name'))
+                                value="{{old('name')}}"
+                            @else
+                                value="{{$user->name}}"
+                            @endif
+    
+                            class="form-control col-md-6" disabled>
+                            <input type="text"  name="id_petugas" 
+                            @if (old('id_petugas'))
+                                value="{{old('id_petugas')}}"
+                            @else
+                                value="{{$user->id}}"
+                            @endif
+    
+                            class="form-control col-md-6" hidden>
+                            <label 
+                            @error('id_petugas') 
+                            class="text-danger"
+                            @enderror>
+                            @error('id_petugas')
+                            {{$message}}
+                            @enderror
+                          </label>
+                        </div>
+                        </div>
+                        </div>
+
+                        </div>
 
                           <button class="btn btn-primary" type="submit">Simpan</button>
                           <button class="btn btn-secondary" type="reset">Reset</button>

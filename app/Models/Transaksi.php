@@ -11,21 +11,26 @@ class Transaksi extends Model
     protected $table='transaksi';
     protected $primaryKey='id';
     protected $fillable=[
-    	'id_outlet','id_member','id_paket','qty','tgl', 'batas_waktu','tgl_bayar','status','dibayar'
+    	'id_outlet','id_member','id_paket','id_petugas','qty','tgl', 'batas_waktu','tgl_bayar','status','dibayar'
     ];
 
     public function outlet()
     {
-        return $this->belongsT0('App\Models\Outlet', 'id_outlet', 'id');
+        return $this->belongsTo('App\Models\Outlet', 'id_outlet', 'id');
     }
 
     public function member()
     {
-        return $this->belongsT0('App\Models\Member', 'id_member', 'id');
+        return $this->belongsTo('App\Models\Member', 'id_member', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'id_petugas', 'id');
     }
 
     public function paket()
     {
-        return $this->belongsT0('App\Models\Paket', 'id_paket', 'id');
+        return $this->belongsTo('App\Models\Paket', 'id_paket', 'id');
     }
 }

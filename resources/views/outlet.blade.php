@@ -25,7 +25,15 @@
     <div class="section-body">
         <div class="row">
             <div class="col-12 col-md-12 col-lg-12">
-                <a href="{{route ('tambah-outlet')}}" class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Tambah Data</a>
+              <div class="card-body bg-white">
+                <form class="form-inline text-center" action="{{route('cari-outlet')}}">
+                  <div class="search-element">
+                    <input class="form-control" name="cari" value="{{ old('cari') }}" type="search" placeholder="Cari Data Outlet..." aria-label="Search" data-width="500">
+                    <button class="btn btn-info" type="submit" value="cari"><i class="fas fa-search"></i></button>
+                  </div>
+                  <a href="{{route ('tambah-outlet')}}" class="btn btn-icon icon-left btn-primary m-4"><i class="fas fa-clipboard-list"></i> Tambah Data</a>
+                </form>
+              
                 <hr>
                 {{-- message simpan data --}}
                 @if (session('message-simpan'))
@@ -60,8 +68,21 @@
                   </div>
                 </div>
                 @endif
-                <table class="table table-striped table-bordered">
-                  <tr>
+                {{-- message gagal--}}
+                @if (session('message-gagal'))
+                <div class="alert alert-danger alert-dismissible show fade">
+                  <div class="alert-body">
+                    <button class="close" data-dismiss="alert">
+                      <span>×</span>
+                    </button>
+                    {{(session('message-gagal'))}}
+                  </div>
+                </div>
+                @endif
+
+                <div class="table-responsive-md mt-3">
+                  <table class="table table-striped table-hover" >
+                  <tr class="thead-light">
                     <th>No</th>
                     <th>Nama Outlet</th>
                     <th>Alamat</th>
@@ -77,20 +98,22 @@
                     <td>{{$data->telp}}</td>
 
                     <td>
-                      <a href="{{route('edit-outlet',$data->id)}}" class="btn btn-icon btn-primary"><i class="far fa-edit"></i></a>
-                      <a href="#" data-id="{{$data->id}}" class="btn btn-icon btn-danger hapus">
+                      <a href="{{route('edit-outlet',$data->id)}}" class="btn btn-icon btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                      <a  data-id="{{$data->id}}" class="btn btn-icon btn-danger text-white hapus">
                       <form action="{{route('hapus-outlet',$data->id)}}" id="hapus{{$data->id}}"method="POST">
                       @csrf
                       @method('delete')
                       </form>
-                      <i class="fas fa-times"></i>
+                      <i class="fas fa-trash"></i>
                       </a>
                     </td>
                   </tr>
                   @endforeach
 
                 </table>
+              </div>
                 {{$outlet->links()}}
+            </div>
             </div>
          </div>
 

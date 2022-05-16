@@ -15,6 +15,14 @@
 @stop
 @section('content')
     <div class="section-body">
+      <div class="section-header">
+        <h1>Data Paket</h1>
+        <div class="section-header-breadcrumb">
+          <div class="breadcrumb-item active"><a href="{{route('dashboard')}}">Dashboard</a></div>
+          <div class="breadcrumb-item"><a href="{{route('tampil-paket')}}">Paket</a></div>
+          <div class="breadcrumb-item">Edit Paket</div>
+        </div>
+      </div>
         <div class="row">
             <div class="col-12 col-md-12 col-lg-12">
                 <div class="row">
@@ -92,6 +100,7 @@
 
                           <div class="form-group">
                             <label>Harga :</label>
+                            <div class="input-group mb-2 mr-sm-2">
                             <input type="text" name="harga" 
                             @if (old('harga'))
                             value="{{old('harga')}}" 
@@ -99,6 +108,9 @@
                             value="{{$paket->harga}}" 
                             @endif
                             class="form-control">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">/Kg</div>
+                            </div>
                             <label 
                             @error('harga') 
                             class="text-danger"
@@ -107,6 +119,7 @@
                             {{$message}}
                             @enderror
                           </label>
+                          </div>
                           </div>
 
                           <button class="btn btn-primary" type="submit">Simpan</button>

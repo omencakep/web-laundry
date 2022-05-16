@@ -15,6 +15,6 @@ class Detail_Transaksi extends Model
     ];
     public function transaksi()
     {
-        return $this->belongsT0('App\Models\Transaksi', 'id_transaksi', 'id');
+        return $this->belongsTo('App\Models\Transaksi', 'id_transaksi', 'id');
     }
 }

@@ -15,7 +15,7 @@ class userSeeder extends Seeder
      */
     public function run()
     {
-        User::truncate();
+        // User::truncate();
         User::insert([
             [
             'name' => 'admin1',

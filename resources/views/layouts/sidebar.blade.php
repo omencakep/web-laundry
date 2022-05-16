@@ -1,7 +1,7 @@
 <div class="main-sidebar">
     <aside id="sidebar-wrapper">
       <div class="sidebar-brand">
-        <a href="index.html">Laundry XII RPL 5</a>
+        <a href="{{route('dashboard')}}">laundry bang omen</a>
       </div>
       <div class="sidebar-brand sidebar-brand-sm">
         <a href="{{url('/dashboard')}}">anjay</a>

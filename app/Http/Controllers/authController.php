@@ -9,7 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Arr;
 use Illuminate\Pagination\Paginator;
+
 
 
 class authController extends Controller
@@ -69,7 +72,7 @@ class authController extends Controller
             'name'=>$request->get('name'),
             'role'=>$request->get('role'),
             'email'=>$request->get('email'),
-            'password'=> bcrypt($request->get('password')),
+            'password'=> Hash::make($request->get('password')),
             'remember_token' => Str::random(60),
             ]);
             return redirect()->route('tampil-user')->with('message-simpan','Data berhasil disimpan!');
@@ -79,7 +82,7 @@ class authController extends Controller
     //tampil edit profile
     public function edit($id){
         $user = DB::table('user')->where('id',$id)->first();
-        return view('user-edit',['user' => $user]);
+        return view('user-edit', compact('user'));
         // return view('user-edit');
     }
 
@@ -88,8 +91,8 @@ class authController extends Controller
        
     $validator = $request->validate([
         'name' => 'required|string|max:100',
+        'email'=> 'required',
         'role'=>'required|string',
-        'required|unique:user,email,$id',
         // 'password'=>'required',
         
         
@@ -101,42 +104,23 @@ class authController extends Controller
             'role.required' => 'Role tidak boleh kosong!',
 
             'email.required' => 'Alamat email tidak boleh kosong!',
-            'email.unique' => 'Alamat email telah digunakan!',
+            // 'email.unique' => 'Alamat email telah digunakan!',
 
-            // 'password.required' => 'Password tidak boleh kosong!',
+            //  'password.required' => 'Password tidak boleh kosong!',
 
 
         ]
     );
-    $user = User::where('id',$id)->update([
-                'name'=>$request->get('name'),
-                'role'=>$request->get('role'),
-                'email'=>$request->get('email'),
-                'password'=> bcrypt($request->get('password')),
-                'remember_token' => Str::random(60),
 
-                // Input Gambar
-                'gambar' => $request->get->file('gambar'),
-                $name = 'gambar'->getClientOriginalName(),
-                $gambar->move('images/post', $name),
-                $post->gambar = $name,
-                
-            ]);
+    $input = $request->all();
+    if(!empty($input['password'])){ 
+        $input['password'] = Hash::make($input['password']);
+    }else{
+        $input = Arr::except($input,array('password'));    
+    }
 
-    // $post = new User();
-    // $post->name = $request->name;
-    // $post->role = $request->role;
-    // $post->email = $request->email;
-    // $post->password = Hash::make($request->password);
-    
-    // // Input Gambar
-    // if($request->file('gambar')){
-    //     $gambar = $request->file('gambar');
-    //     $name = $gambar->getClientOriginalName();
-    //     $gambar->move('images/post', $name);
-    //     $post->gambar = $name;
-    // }
-    // $post->update();    
+    $user = User::find($id);
+    $user->update($input);
             
      return redirect()->route('edit-user',$id)->with('message-update','Data berhasil diupdate!');
 }
@@ -150,6 +134,22 @@ class authController extends Controller
     public function logout(Request $request){
         Auth::logout();
         return redirect ('/');
+    }
+
+    public function cari(Request $request){
+        // menangkap data pencarian
+		$cari = $request->cari;
+ 
+        // mengambil data dari nama sesuai pencarian data
+    $user = DB::table('user')
+    ->where('name','like',"%".$cari."%")
+    ->orwhere('role','like',"%".$cari."%")
+    ->orwhere('email','like',"%".$cari."%")
+    ->paginate(5);
+    Paginator::useBootstrap();
+
+        // mengirim data ke view
+    return view('user',['user' => $user]);
     }
 
 }

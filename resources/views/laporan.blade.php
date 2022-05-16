@@ -98,27 +98,29 @@
 
 <br>
 <div class="row ttd">
-
-
-<div class="col-md-3">
+<div class="col-md-3 mb-5">
     Hormat Kami,
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+
+</div>
+<div class="col-md-6">
+
+</div>
+<div class="col-md-3 mb-5">
+    Penerima,
+
+</div>
+</div>
+
+<div class="row ttd">
+<div class="col-md-3 mt-5">
+
     (.............................................)
 </div>
 <div class="col-md-6">
 
 </div>
-<div class="col-md-3">
-    Penerima,
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+<div class="col-md-3 mt-5">
+
     (.............................................)
 </div>
 

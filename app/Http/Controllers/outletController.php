@@ -7,13 +7,13 @@ use App\Models\Outlet;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
-
+use Exception;
 class outletController extends Controller
 {
 
     //tampil data
     public function tampil(){
-        $data = DB::table('outlet')->paginate(5);
+        $data = DB::table('outlet')->orderBy('id', 'DESC')->paginate(5);
         Paginator::useBootstrap();
         return view('outlet', ['outlet' => $data]);
         
@@ -81,9 +81,32 @@ class outletController extends Controller
 
     //hapus data
     public function hapus($id){
-        $outlet = Outlet::where('id',$id)->delete();
+        
+        try{
+            $outlet = Outlet::where('id',$id)->delete();
+            return redirect()->back()->with('message-hapus','Data berhasil dihapus!');
+        }
+        catch(Exception $e){
+            return redirect()->back()->with('message-gagal','Data gagal dihapus, outlet masih digunakan dalam transaksi!');
+        }
 
-        return redirect()->back()->with('message-hapus','Data berhasil dihapus!');;
+    }
+
+    //search data
+    public function cari(Request $request){
+        // menangkap data pencarian
+		$cari = $request->cari;
+ 
+        // mengambil data dari nama sesuai pencarian data
+    $outlet = DB::table('outlet')
+    ->where('nama','like',"%".$cari."%")
+    ->orwhere('alamat','like',"%".$cari."%")
+    ->orwhere('telp','like',"%".$cari."%")->orderBy('id', 'DESC')
+    ->paginate(5);
+    Paginator::useBootstrap();
+
+        // mengirim data ke view
+    return view('outlet',['outlet' => $outlet]);
     }
 
 

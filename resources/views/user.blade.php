@@ -25,7 +25,15 @@
     <div class="section-body">
         <div class="row">
             <div class="col-12 col-md-12 col-lg-12">
-                <a href=" {{route ('tambah-user')}} " class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Tambah Data</a>
+              <div class="card-body bg-white">
+              <form class="form-inline text-center" action="{{route('cari-user')}}">
+                <div class="search-element">
+                  <input class="form-control" name="cari" value="{{ old('cari') }}" type="search" placeholder="Cari Data User..." aria-label="Search" data-width="500">
+                  <button class="btn btn-info" type="submit" value="cari"><i class="fas fa-search"></i></button>
+                </div>
+                <a href=" {{route ('tambah-user')}} " class="btn btn-icon icon-left btn-primary m-4"><i class="fas fa-clipboard-list"></i> Tambah Data</a>
+              </form>
+                
                 <hr>
                 {{-- message simpan data --}}
                 @if (session('message-simpan'))
@@ -60,8 +68,9 @@
                   </div>
                 </div>
                 @endif
-                <table class="table table-striped table-bordered">
-                  <tr>
+                <div class="table-responsive-md mt-3">
+                  <table class="table table-striped table-hover" >
+                  <tr class="thead-light">
                     <th>No</th>
                     <th>Nama</th>
                     <th>Role</th>
@@ -84,14 +93,16 @@
                       @csrf
                       @method('delete')
                       </form>
-                      <i class="fas fa-times"></i>
+                      <i class="fas fa-trash"></i>
                       </a>
                     </td>
                   </tr>
                   @endforeach
 
                 </table>
+                </div>
                 {{$user->links()}}
+            </div>
             </div>
          </div>
 

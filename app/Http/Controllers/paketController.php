@@ -7,7 +7,7 @@ use App\Models\Paket;
 use App\Models\Outlet;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
-
+Use Exception;
 use Illuminate\Support\Facades\Validator;
 
 class paketController extends Controller
@@ -101,7 +101,30 @@ class paketController extends Controller
 
     //hapus data
     public function hapus($id){
-        $paket = Paket::where('id',$id)->delete();
-        return redirect()->back()->with('message-hapus','Data berhasil dihapus!');
+        
+        try{
+            $paket = Paket::where('id',$id)->delete();
+            return redirect()->back()->with('message-hapus','Data berhasil dihapus!');
+        }
+        catch(Exception $e){
+            return redirect()->back()->with('message-gagal','Data gagal dihapus, paket masih digunakan dalam transaksi!');
+        }
     }
+        //search data
+        public function cari(Request $request){
+            // menangkap data pencarian
+            $cari = $request->cari;
+     
+            // mengambil data dari nama sesuai pencarian data
+        $paket = Outlet::join('paket','paket.id_outlet', '=', 'outlet.id')
+        ->where('nama_paket','like',"%".$cari."%")
+        ->orwhere('nama','like',"%".$cari."%")
+        ->orwhere('jenis','like',"%".$cari."%")
+        ->orwhere('harga','like',"%".$cari."%")
+        ->paginate(5);
+        Paginator::useBootstrap();
+    
+            // mengirim data ke view
+        return view('paket',['paket' => $paket]);
+        }
 }

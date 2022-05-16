@@ -16,6 +16,6 @@ class Paket extends Model
 
     public function outlet()
     {
-        return $this->belongsT0('App\Models\Outlet', 'id_outlet', 'id');
+        return $this->belongsTo('App\Models\Outlet', 'id_outlet', 'id');
     }
 }
